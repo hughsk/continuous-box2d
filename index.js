@@ -43,7 +43,7 @@ function continuousBox2d(Box2D) {
 
     field.on('created', function(chunk) {
       var quads = []
-        (chunk, quads)
+      mesher(chunk, quads)
 
       var i = quads.length
       while (i--) {
