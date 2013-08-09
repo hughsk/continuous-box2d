@@ -1,0 +1,46 @@
+{
+  "name": "continuous-box2d",
+  "version": "0.0.0",
+  "description": "ERROR: No README.md file found!",
+  "main": "index.js",
+  "scripts": {
+    "start": "beefy demo.js:bundle.js --live",
+    "prepublish": "browserify demo.js -o bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hughsk/continuous-box2d.git"
+  },
+  "author": "Hugh Kennedy <hughskennedy@gmail.com> (http://hughskennedy.com/)",
+  "license": "MIT",
+  "devDependencies": {
+    "debounce": "0.0.2",
+    "vkey": "0.0.2",
+    "raf": "0.0.3",
+    "pointer-trap": "0.0.0",
+    "continuous-observer": "~0.1.0",
+    "aabb-2d": "0.0.0",
+    "zeros": "0.0.0",
+    "levelup": "~0.12.0",
+    "level-js": "~1.0.7",
+    "continuous-storage": "0.0.0",
+    "cave-automata-2d": "~0.3.1",
+    "ndarray-continuous": "~0.3.0",
+    "box2dweb-commonjs": "~2.1.0",
+    "ticker": "0.0.1",
+    "box2d-player": "0.0.0"
+  },
+  "dependencies": {
+    "greedy-mesher": "~1.0.1",
+    "morton-page": "~0.1.0"
+  },
+  "keywords": [
+    "continuous",
+    "infinite",
+    "ndarray",
+    "box2d",
+    "physics",
+    "greedy",
+    "grid"
+  ]
+}
