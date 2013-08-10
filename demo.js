@@ -131,17 +131,16 @@ function draw() {
 
   ctx.fillStyle = '#fff'
   ctx.fillRect(0, 0, width, height)
-  ctx.fillStyle = '#444'
 
   for (var obj = world.GetBodyList(); obj; obj = obj.GetNext()) {
     data = obj.GetUserData()
     if (!data) continue
     if (data.type === 'wall') {
+      ctx.fillStyle = '#444'
       var x = data.pos[0] * 30 + 1 - camx + width / 2
         , y = data.pos[1] * 30 + 1 - camy + height / 2
         , w = data.pos[2] * 30 - 2
         , h = data.pos[3] * 30 - 2
-
       if (
         x + w >= 0 ||
         y + h >= 0 ||
@@ -150,6 +149,13 @@ function draw() {
       ) {
         ctx.fillRect(x, y, w, h)
       }
+    } else
+    if (data.type === 'circle') {
+      var x = obj.m_xf.position.x * 30 - camx + width / 2
+        , y = obj.m_xf.position.y * 30 - camy + height / 2
+
+      ctx.fillStyle = '#FFC725'
+      drawCircle(ctx, x, y, data.scale * 30)
     }
   }
 
@@ -161,6 +167,34 @@ function draw() {
     , 28
   )
 }
+
+/**
+ * Create bodies when clicking
+ */
+canvas.addEventListener('click', function(e) {
+  var cx = e.offsetX / 30
+  var cy = e.offsetY / 30
+  var px = player.body.m_xf.position.x
+  var py = player.body.m_xf.position.y
+  var x = px + cx - canvas.width / 60
+  var y = py + cy - canvas.height / 60
+
+  var def = new b2BodyDef
+  var scale = Math.random() + 0.5
+  def.position = new b2Vec2(x, y)
+  def.type = b2Body.b2_dynamicBody
+  def.userData = { type: 'circle', scale: scale }
+
+  var body = world.CreateBody(def)
+
+  var fixdef = new b2FixtureDef
+  fixdef.shape = new b2CircleShape(scale)
+  var fixture = body.CreateFixture(fixdef)
+  setTimeout(function() {
+    body.DestroyFixture(fixture)
+    world.DestroyBody(body)
+  }, 30000)
+}, false)
 
 /**
  * DOM Setup
@@ -175,3 +209,11 @@ document.body.appendChild(canvas)
 process.nextTick(function() {
   moveTo([0, 0])
 })
+
+var tau = Math.PI * 2
+function drawCircle(ctx, x, y, r) {
+  ctx.beginPath()
+  ctx.arc(x, y, r, 0, tau, true)
+  ctx.closePath()
+  ctx.fill()
+}
