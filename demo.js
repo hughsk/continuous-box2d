@@ -145,8 +145,8 @@ function draw() {
   ctx.fillStyle = '#fff'
   ctx.fillRect(0, 0, width, height)
 
-  for (var obj = world.GetBodyList(); obj; obj = obj.GetNext()) {
-    data = obj.GetUserData()
+  for (var obj = world.m_bodyList; obj; obj = obj.m_next) {
+    data = obj.m_userData
     if (!data) continue
     if (data.type === 'wall') {
       ctx.fillStyle = '#444'
