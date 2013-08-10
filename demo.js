@@ -45,7 +45,7 @@ var storage = require('continuous-storage')(db, field, {
 var world = new b2World(new b2Vec2(0, 50), true)
 var player = require('box2d-player')(Box2D)(world, {
     position: new b2Vec2(5, 0)
-  , jumpHeight: 25
+  , jumpHeight: 20
 })
 var chunker = require('./')(Box2D)(world, field, {
     xscale: 1
@@ -93,7 +93,7 @@ document.body.addEventListener('keyup', function(e) {
 /**
  * Game "loop"
  */
-ticker(canvas, 60, 3)
+ticker(canvas, 60, 2)
   .on('tick', tick)
   .on('draw', draw)
 
@@ -103,7 +103,22 @@ ticker(canvas, 60, 3)
  * position
  */
 var tickrate = 1 / 60
-function tick(dt) {
+var jumpcountdown = 0
+function tick() {
+  player.body.m_linearVelocity.x = movex
+  if (jumping) {
+    if (!player.jump()) {
+      if (!jumpcountdown) {
+        tempvec.x =  0
+        tempvec.y = player.body.m_linearVelocity.y > 0 ? -5 : -1
+        player.body.ApplyImpulse(tempvec, player.body.GetWorldCenter())
+      }
+    } else {
+      jumpcountdown = 0.35
+    }
+  }
+
+  jumpcountdown = Math.max(0, jumpcountdown - tickrate)
   world.Step(tickrate, 8, 3)
 
   moveTo([
@@ -118,13 +133,11 @@ function tick(dt) {
 var camx = 0
 var camy = 0
 var ctx = canvas.getContext('2d')
+var tempvec = new b2Vec2
 function draw() {
   var data
   var width = canvas.width
   var height = canvas.height
-
-  player.body.m_linearVelocity.x = movex
-  if (jumping) player.jump()
 
   camx = player.body.m_xf.position.x * 30
   camy = player.body.m_xf.position.y * 30
