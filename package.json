@@ -1,7 +1,7 @@
 {
   "name": "continuous-box2d",
   "version": "0.0.0",
-  "description": "ERROR: No README.md file found!",
+  "description": "Generate a bunch of box2d bodies to match a grid backed by ndarray-continuous",
   "main": "index.js",
   "scripts": {
     "start": "beefy demo.js:bundle.js --live",
